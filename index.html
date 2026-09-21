@@ -1,9 +1,1643 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Invoice App Test</title>
-  </head>
-  <body>
-    <h1>Invoice App is online</h1>
-  </body>
-</html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+  <meta name="theme-color" content="#2563eb">
+
+  <link
+    rel="manifest"
+    href="manifest.webmanifest"
+  >
+
+  <title>Invoice App</title>
+
+  <style>
+    :root {
+      --background: #f1f5f9;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --primary: #2563eb;
+      --danger: #dc2626;
+      --success: #059669;
+      --warning: #d97706;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 16px;
+      max-width: 1000px;
+      margin-inline: auto;
+      background: var(--background);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    body.dark {
+      --background: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --border: #475569;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--text);
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      width: 100%;
+      padding: 11px;
+      margin: 5px 0;
+      border-radius: 6px;
+      font: inherit;
+    }
+
+    input,
+    textarea,
+    select {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    button {
+      border: 0;
+      background: var(--primary);
+      color: white;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+
+    .danger {
+      background: var(--danger);
+    }
+
+    .success {
+      background: var(--success);
+    }
+
+    .warning {
+      background: var(--warning);
+    }
+
+    .gray {
+      background: #64748b;
+    }
+
+    .purple {
+      background: #7c3aed;
+    }
+
+    .card,
+    article,
+    details {
+      background: var(--card);
+      padding: 14px;
+      margin: 12px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px #0002;
+    }
+
+    .business {
+      border-left: 5px solid var(--primary);
+    }
+
+    .business p {
+      margin: 5px 0;
+      color: var(--muted);
+    }
+
+    .logo {
+      max-width: 180px;
+      max-height: 100px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .dashboard .card {
+      text-align: center;
+      margin: 0;
+    }
+
+    .dashboard p {
+      color: var(--muted);
+      margin: 4px;
+    }
+
+    .dashboard strong {
+      font-size: 20px;
+    }
+
+    .filter {
+      padding: 12px;
+      border-radius: 8px;
+      background: #dff4ff;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .paid {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .overdue {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .notes,
+    .history,
+    .storage {
+      margin-top: 8px;
+      padding: 9px;
+      border-radius: 6px;
+      background: #f8fafc;
+      color: #172033;
+    }
+
+    body.dark .notes,
+    body.dark .history,
+    body.dark .storage {
+      background: #334155;
+      color: #f8fafc;
+    }
+
+    .history table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .history th,
+    .history td {
+      padding: 7px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .history caption {
+      padding-bottom: 6px;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    .reminder {
+      padding: 12px;
+      border-left: 5px solid var(--danger);
+      border-radius: 7px;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    #signature {
+      width: 100%;
+      height: 160px;
+      background: white;
+      border: 2px dashed #94a3b8;
+      touch-action: none;
+    }
+
+    .print-only {
+      display: none;
+    }
+
+    @media print {
+      .no-print,
+      button,
+      input,
+      textarea,
+      select,
+      details,
+      #message,
+      #reminderBox {
+        display: none !important;
+      }
+
+      .print-only {
+        display: block;
+      }
+
+      body {
+        padding: 0;
+        background: white;
+        color: black;
+      }
+
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      article,
+      .business,
+      .card {
+        break-inside: avoid;
+        border: 1px solid #ccc;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="no-print">
+    <h1>Invoice App</h1>
+
+    <button id="themeButton">
+      Switch theme
+    </button>
+
+    <button
+      id="notificationButton"
+      class="warning"
+    >
+      Enable overdue notifications
+    </button>
+
+    <p id="notificationMessage"></p>
+
+    <details>
+      <summary>Business details</summary>
+
+      <input
+        id="businessNameInput"
+        placeholder="Business name"
+      >
+
+      <input
+        id="businessPhoneInput"
+        placeholder="Phone"
+      >
+
+      <input
+        id="businessEmailInput"
+        type="email"
+        placeholder="Email"
+      >
+
+      <textarea
+        id="businessAddressInput"
+        placeholder="Address"
+      ></textarea>
+
+      <select id="currencyInput">
+        <option value="KES">KES</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+        <option value="TZS">TZS</option>
+      </select>
+
+      <select id="dateFormatInput">
+        <option value="DMY">DD/MM/YYYY</option>
+        <option value="MDY">MM/DD/YYYY</option>
+        <option value="YMD">YYYY-MM-DD</option>
+      </select>
+
+      <input
+        id="logoInput"
+        type="file"
+        accept="image/*"
+      >
+
+      <button
+        id="saveBusinessButton"
+        class="success"
+      >
+        Save business details
+      </button>
+
+      <button
+        id="removeLogoButton"
+        class="danger"
+      >
+        Remove logo
+      </button>
+    </details>
+
+    <details>
+      <summary>Storage management</summary>
+
+      <div
+        id="storageStatus"
+        class="storage"
+      >
+        Storage status unavailable.
+      </div>
+
+      <button id="refreshStorageButton">
+        Refresh storage status
+      </button>
+
+      <button
+        id="clearDataButton"
+        class="danger"
+      >
+        Clear all application data
+      </button>
+    </details>
+
+    <details open>
+      <summary>Add invoice</summary>
+
+      <input
+        id="customerInput"
+        list="customerList"
+        placeholder="Customer name"
+        required
+      >
+
+      <datalist id="customerList"></datalist>
+
+      <input
+        id="amountInput"
+        type="number"
+        min="0.01"
+        step="0.01"
+        placeholder="Amount"
+        required
+      >
+
+      <input
+        id="dueDateInput"
+        type="date"
+        required
+      >
+
+      <textarea
+        id="notesInput"
+        placeholder="Notes"
+      ></textarea>
+
+      <canvas id="signature"></canvas>
+
+      <button
+        id="clearSignatureButton"
+        class="gray"
+      >
+        Clear signature
+      </button>
+
+      <button id="saveInvoiceButton">
+        Save invoice
+      </button>
+
+      <button
+        id="cancelEditButton"
+        class="gray"
+        hidden
+      >
+        Cancel edit
+      </button>
+
+      <p id="message"></p>
+    </details>
+
+    <details>
+      <summary>Reports and backup</summary>
+
+      <button
+        id="printButton"
+        class="purple"
+      >
+        Print report / Save as PDF
+      </button>
+
+      <button
+        id="exportButton"
+        class="success"
+      >
+        Export backup
+      </button>
+
+      <input
+        id="importInput"
+        type="file"
+        accept="application/json"
+      >
+
+      <button
+        id="importButton"
+        class="purple"
+      >
+        Import backup
+      </button>
+    </details>
+  </div>
+
+  <section class="card business">
+    <img
+      id="businessLogo"
+      class="logo"
+      alt="Business logo"
+      hidden
+    >
+
+    <h1 id="businessName">
+      Your Business Name
+    </h1>
+
+    <p id="businessPhone">
+      Phone: Not provided
+    </p>
+
+    <p id="businessEmail">
+      Email: Not provided
+    </p>
+
+    <p id="businessAddress">
+      Address: Not provided
+    </p>
+
+    <p id="businessCurrency">
+      Currency: KES
+    </p>
+
+    <p id="businessDateFormat">
+      Date format: DD/MM/YYYY
+    </p>
+
+    <p class="print-only">
+      Report generated:
+      <span id="printDate"></span>
+    </p>
+  </section>
+
+  <div
+    id="reminderBox"
+    hidden
+  ></div>
+
+  <h2>Dashboard</h2>
+
+  <section class="dashboard">
+    <div class="card">
+      <p>Invoices</p>
+      <strong id="invoiceCount">0</strong>
+    </div>
+
+    <div class="card">
+      <p>Total billed</p>
+      <strong id="totalBilled">KES 0.00</strong>
+    </div>
+
+    <div class="card">
+      <p>Total paid</p>
+      <strong id="totalPaid">KES 0.00</strong>
+    </div>
+
+    <div class="card">
+      <p>Outstanding</p>
+      <strong id="totalOutstanding">KES 0.00</strong>
+    </div>
+  </section>
+
+  <div class="no-print">
+    <h2>Invoices</h2>
+
+    <div class="filter">
+      <input
+        id="searchInput"
+        placeholder="Search customer or invoice number"
+      >
+
+      <select id="statusFilter">
+        <option value="all">All statuses</option>
+        <option value="paid">Paid</option>
+        <option value="pending">Pending</option>
+        <option value="overdue">Overdue</option>
+      </select>
+
+      <select id="sortFilter">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="high">Highest amount</option>
+        <option value="low">Lowest amount</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="invoiceList"></div>
+
+  <script>
+    var invoices = [];
+    var business = {
+      name: "",
+      phone: "",
+      email: "",
+      address: "",
+      currency: "KES",
+      dateFormat: "DMY",
+      logo: ""
+    };
+
+    var editingIndex = -1;
+    var database = null;
+    var deferredInstall = null;
+
+    var canvas =
+      document.getElementById("signature");
+
+    var context =
+      canvas.getContext("2d");
+
+    function element(id) {
+      return document.getElementById(id);
+    }
+
+    function today() {
+      var date = new Date();
+
+      return date.getFullYear() +
+        "-" +
+        String(date.getMonth() + 1)
+          .padStart(2, "0") +
+        "-" +
+        String(date.getDate())
+          .padStart(2, "0");
+    }
+
+    function invoiceNumber(number) {
+      return "INV-" +
+        String(number).padStart(3, "0");
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "Not provided";
+      }
+
+      var parts = value.split("-");
+      var year = parts[0];
+      var month = parts[1];
+      var day = parts[2];
+
+      if (business.dateFormat === "MDY") {
+        return month + "/" + day + "/" + year;
+      }
+
+      if (business.dateFormat === "YMD") {
+        return value;
+      }
+
+      return day + "/" + month + "/" + year;
+    }
+
+    function formatLabel() {
+      if (business.dateFormat === "MDY") {
+        return "MM/DD/YYYY";
+      }
+
+      if (business.dateFormat === "YMD") {
+        return "YYYY-MM-DD";
+      }
+
+      return "DD/MM/YYYY";
+    }
+
+    function money(value) {
+      return new Intl.NumberFormat(
+        "en-KE",
+        {
+          style: "currency",
+          currency: business.currency,
+          minimumFractionDigits: 2
+        }
+      ).format(Number(value) || 0);
+    }
+
+    function loadData() {
+      try {
+        invoices = JSON.parse(
+          localStorage.getItem(
+            "invoiceAppInvoices"
+          ) || "[]"
+        );
+
+        business = Object.assign(
+          business,
+          JSON.parse(
+            localStorage.getItem(
+              "invoiceAppBusiness"
+            ) || "{}"
+          )
+        );
+      } catch (error) {
+        invoices = [];
+      }
+
+      if (!Array.isArray(invoices)) {
+        invoices = [];
+      }
+
+      invoices.forEach(function (invoice, index) {
+        invoice.number =
+          invoiceNumber(index + 1);
+
+        invoice.invoiceDate =
+          invoice.invoiceDate || today();
+
+        invoice.paid =
+          Number(invoice.paid) || 0;
+
+        invoice.payments =
+          Array.isArray(invoice.payments)
+            ? invoice.payments
+            : [];
+
+        invoice.notes =
+          invoice.notes || "";
+
+        invoice.signature =
+          invoice.signature || "";
+      });
+    }
+
+    function saveData() {
+      localStorage.setItem(
+        "invoiceAppInvoices",
+        JSON.stringify(invoices)
+      );
+
+      localStorage.setItem(
+        "invoiceAppBusiness",
+        JSON.stringify(business)
+      );
+    }
+
+    function invoiceStatus(invoice) {
+      var balance =
+        Number(invoice.amount) -
+        Number(invoice.paid || 0);
+
+      if (balance <= 0) {
+        return {
+          label: "Paid",
+          className: "paid"
+        };
+      }
+
+      var due =
+        new Date(
+          invoice.dueDate + "T00:00:00"
+        );
+
+      var current =
+        new Date();
+
+      current.setHours(0, 0, 0, 0);
+
+      if (due < current) {
+        return {
+          label: "Overdue",
+          className: "overdue"
+        };
+      }
+
+      return {
+        label: "Pending",
+        className: "pending"
+      };
+    }
+
+    function updateBusinessDisplay() {
+      element("businessName").textContent =
+        business.name || "Your Business Name";
+
+      element("businessPhone").textContent =
+        "Phone: " +
+        (business.phone || "Not provided");
+
+      element("businessEmail").textContent =
+        "Email: " +
+        (business.email || "Not provided");
+
+      element("businessAddress").textContent =
+        "Address: " +
+        (business.address || "Not provided");
+
+      element("businessCurrency").textContent =
+        "Currency: " +
+        business.currency;
+
+      element("businessDateFormat").textContent =
+        "Date format: " +
+        formatLabel();
+
+      element("businessNameInput").value =
+        business.name;
+
+      element("businessPhoneInput").value =
+        business.phone;
+
+      element("businessEmailInput").value =
+        business.email;
+
+      element("businessAddressInput").value =
+        business.address;
+
+      element("currencyInput").value =
+        business.currency;
+
+      element("dateFormatInput").value =
+        business.dateFormat;
+
+      if (business.logo) {
+        element("businessLogo").src =
+          business.logo;
+
+        element("businessLogo").hidden =
+          false;
+      } else {
+        element("businessLogo").hidden =
+          true;
+      }
+    }
+
+    function updateDashboard() {
+      var billed = 0;
+      var paid = 0;
+
+      invoices.forEach(function (invoice) {
+        billed += Number(invoice.amount) || 0;
+        paid += Number(invoice.paid) || 0;
+      });
+
+      element("invoiceCount").textContent =
+        invoices.length;
+
+      element("totalBilled").textContent =
+        money(billed);
+
+      element("totalPaid").textContent =
+        money(paid);
+
+      element("totalOutstanding").textContent =
+        money(billed - paid);
+    }
+
+    function updateStorageStatus() {
+      var paymentCount = 0;
+
+      invoices.forEach(function (invoice) {
+        paymentCount += invoice.payments.length;
+      });
+
+      element("storageStatus").textContent =
+        "Invoices: " +
+        invoices.length +
+        " | Payments: " +
+        paymentCount +
+        " | Business profile: " +
+        (business.name ? "saved" : "not saved") +
+        " | Logo: " +
+        (business.logo ? "saved" : "not saved");
+    }
+
+    function updateCustomers() {
+      var names = [];
+
+      invoices.forEach(function (invoice) {
+        if (
+          invoice.customer &&
+          names.indexOf(invoice.customer) === -1
+        ) {
+          names.push(invoice.customer);
+        }
+      });
+
+      element("customerList").innerHTML = "";
+
+      names.forEach(function (name) {
+        var option =
+          document.createElement("option");
+
+        option.value = name;
+
+        element("customerList")
+          .appendChild(option);
+      });
+    }
+
+    function updateReminder() {
+      var overdue = invoices.filter(function (invoice) {
+        return invoiceStatus(invoice)
+          .className === "overdue";
+      });
+
+      if (overdue.length === 0) {
+        element("reminderBox").hidden = true;
+        return;
+      }
+
+      var amount = overdue.reduce(
+        function (total, invoice) {
+          return total +
+            Number(invoice.amount) -
+            Number(invoice.paid || 0);
+        },
+        0
+      );
+
+      element("reminderBox").textContent =
+        "Overdue invoices: " +
+        overdue.length +
+        " | Outstanding: " +
+        money(amount);
+
+      element("reminderBox").className =
+        "reminder";
+
+      element("reminderBox").hidden =
+        false;
+    }
+
+    function visibleInvoices() {
+      var search =
+        element("searchInput")
+          .value
+          .toLowerCase();
+
+      var status =
+        element("statusFilter").value;
+
+      var sort =
+        element("sortFilter").value;
+
+      var result = invoices.filter(
+        function (invoice) {
+          var matchesSearch =
+            (
+              invoice.customer +
+              " " +
+              invoice.number
+            )
+              .toLowerCase()
+              .includes(search);
+
+          var currentStatus =
+            invoiceStatus(invoice)
+              .className;
+
+          var matchesStatus =
+            status === "all" ||
+            status === currentStatus;
+
+          return matchesSearch &&
+            matchesStatus;
+        }
+      );
+
+      result.sort(function (first, second) {
+        if (sort === "high") {
+          return second.amount - first.amount;
+        }
+
+        if (sort === "low") {
+          return first.amount - second.amount;
+        }
+
+        if (sort === "oldest") {
+          return first.dueDate
+            .localeCompare(second.dueDate);
+        }
+
+        return second.dueDate
+          .localeCompare(first.dueDate);
+      });
+
+      return result;
+    }
+
+    function renderInvoices() {
+      var list =
+        element("invoiceList");
+
+      list.innerHTML = "";
+
+      visibleInvoices().forEach(
+        function (invoice) {
+          var index =
+            invoices.indexOf(invoice);
+
+          var status =
+            invoiceStatus(invoice);
+
+          var card =
+            document.createElement("article");
+
+          card.innerHTML =
+            "<strong>Invoice:</strong> " +
+            invoice.number +
+            "<br><strong>Customer:</strong> " +
+            escapeHtml(invoice.customer) +
+            "<br><strong>Invoice date:</strong> " +
+            formatDate(invoice.invoiceDate) +
+            "<br><strong>Amount:</strong> " +
+            money(invoice.amount) +
+            "<br><strong>Paid:</strong> " +
+            money(invoice.paid) +
+            "<br><strong>Balance:</strong> " +
+            money(
+              invoice.amount -
+              invoice.paid
+            ) +
+            "<br><strong>Due:</strong> " +
+            formatDate(invoice.dueDate) +
+            "<br><span class="status " +
+            status.className +
+            "">" +
+            status.label +
+            "</span>";
+
+          if (invoice.notes) {
+            var notes =
+              document.createElement("div");
+
+            notes.className = "notes";
+            notes.textContent =
+              "Notes: " + invoice.notes;
+
+            card.appendChild(notes);
+          }
+
+          if (invoice.payments.length) {
+            var history =
+              document.createElement("div");
+
+            history.className = "history";
+
+            history.innerHTML =
+              "<table>" +
+              "<caption>Payment history</caption>" +
+              "<thead><tr>" +
+              "<th scope="col">Date</th>" +
+              "<th scope="col">Amount</th>" +
+              "</tr></thead><tbody></tbody>" +
+              "</table>";
+
+            var body =
+              history.querySelector("tbody");
+
+            invoice.payments.forEach(
+              function (payment) {
+                var row =
+                  document.createElement("tr");
+
+                var dateCell =
+                  document.createElement("td");
+
+                dateCell.textContent =
+                  formatDate(payment.date);
+
+                var amountCell =
+                  document.createElement("td");
+
+                amountCell.textContent =
+                  money(payment.amount);
+
+                row.appendChild(dateCell);
+                row.appendChild(amountCell);
+                body.appendChild(row);
+              }
+            );
+
+            card.appendChild(history);
+          }
+
+          if (invoice.signature) {
+            var signature =
+              document.createElement("img");
+
+            signature.src =
+              invoice.signature;
+
+            signature.alt =
+              "Customer signature";
+
+            signature.style =
+              "max-width:100%;max-height:120px";
+
+            card.appendChild(signature);
+          }
+
+          [
+            ["payment", "Record payment", "warning"],
+            ["edit", "Edit", "success"],
+            ["delete", "Delete", "danger"]
+          ].forEach(function (item) {
+            var button =
+              document.createElement("button");
+
+            button.textContent = item[1];
+            button.className = item[2];
+            button.dataset.action = item[0];
+            button.dataset.index = index;
+
+            card.appendChild(button);
+          });
+
+          list.appendChild(card);
+        }
+      );
+
+      updateDashboard();
+      updateStorageStatus();
+      updateCustomers();
+      updateReminder();
+    }
+
+    function escapeHtml(value) {
+      var container =
+        document.createElement("div");
+
+      container.textContent =
+        value || "";
+
+      return container.innerHTML;
+    }
+
+    function resizeCanvas() {
+      var ratio =
+        window.devicePixelRatio || 1;
+
+      canvas.width =
+        canvas.clientWidth * ratio;
+
+      canvas.height =
+        canvas.clientHeight * ratio;
+
+      context.scale(ratio, ratio);
+      context.lineWidth = 2;
+      context.lineCap = "round";
+    }
+
+    function clearCanvas() {
+      context.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+    }
+
+    var drawing = false;
+
+    canvas.addEventListener(
+      "pointerdown",
+      function (event) {
+        drawing = true;
+
+        var rect =
+          canvas.getBoundingClientRect();
+
+        context.beginPath();
+
+        context.moveTo(
+          event.clientX - rect.left,
+          event.clientY - rect.top
+        );
+      }
+    );
+
+    canvas.addEventListener(
+      "pointermove",
+      function (event) {
+        if (!drawing) {
+          return;
+        }
+
+        var rect =
+          canvas.getBoundingClientRect();
+
+        context.lineTo(
+          event.clientX - rect.left,
+          event.clientY - rect.top
+        );
+
+        context.stroke();
+      }
+    );
+
+    canvas.addEventListener(
+      "pointerup",
+      function () {
+        drawing = false;
+      }
+    );
+
+    canvas.addEventListener(
+      "pointercancel",
+      function () {
+        drawing = false;
+      }
+    );
+
+    element("saveBusinessButton")
+      .addEventListener(
+        "click",
+        function () {
+          business.name =
+            element("businessNameInput")
+              .value
+              .trim();
+
+          business.phone =
+            element("businessPhoneInput")
+              .value
+              .trim();
+
+          business.email =
+            element("businessEmailInput")
+              .value
+              .trim();
+
+          business.address =
+            element("businessAddressInput")
+              .value
+              .trim();
+
+          business.currency =
+            element("currencyInput")
+              .value;
+
+          business.dateFormat =
+            element("dateFormatInput")
+              .value;
+
+          saveData();
+          updateBusinessDisplay();
+          renderInvoices();
+
+          element("message").textContent =
+            "Business details saved.";
+        }
+      );
+
+    element("logoInput")
+      .addEventListener(
+        "change",
+        function (event) {
+          var file =
+            event.target.files[0];
+
+          if (!file) {
+            return;
+          }
+
+          var reader =
+            new FileReader();
+
+          reader.onload =
+            function () {
+              business.logo =
+                reader.result;
+
+              saveData();
+              updateBusinessDisplay();
+            };
+
+          reader.readAsDataURL(file);
+        }
+      );
+
+    element("removeLogoButton")
+      .addEventListener(
+        "click",
+        function () {
+          business.logo = "";
+          saveData();
+          updateBusinessDisplay();
+        }
+      );
+
+    element("saveInvoiceButton")
+      .addEventListener(
+        "click",
+        function () {
+          var customer =
+            element("customerInput");
+
+          var amount =
+            element("amountInput");
+
+          var dueDate =
+            element("dueDateInput");
+
+          if (
+            !customer.checkValidity() ||
+            !amount.checkValidity() ||
+            !dueDate.checkValidity()
+          ) {
+            customer.reportValidity();
+            amount.reportValidity();
+            dueDate.reportValidity();
+            return;
+          }
+
+          var invoice = {
+            customer: customer.value.trim(),
+            number:
+              editingIndex === -1
+                ? invoiceNumber(
+                    invoices.length + 1
+                  )
+                : invoices[editingIndex].number,
+            invoiceDate:
+              editingIndex === -1
+                ? today()
+                : invoices[editingIndex]
+                    .invoiceDate,
+            amount: Number(amount.value),
+            dueDate: dueDate.value,
+            notes:
+              element("notesInput")
+                .value
+                .trim(),
+            paid:
+              editingIndex === -1
+                ? 0
+                : invoices[editingIndex].paid,
+            payments:
+              editingIndex === -1
+                ? []
+                : invoices[editingIndex]
+                    .payments,
+            signature:
+              canvas.toDataURL("image/png")
+          };
+
+          if (editingIndex === -1) {
+            invoices.push(invoice);
+          } else {
+            invoices[editingIndex] =
+              invoice;
+          }
+
+          saveData();
+          clearForm();
+          renderInvoices();
+
+          element("message").textContent =
+            "Invoice saved successfully.";
+        }
+      );
+
+    function clearForm() {
+      element("customerInput").value = "";
+      element("amountInput").value = "";
+      element("dueDateInput").value = "";
+      element("notesInput").value = "";
+
+      clearCanvas();
+
+      editingIndex = -1;
+
+      element("saveInvoiceButton")
+        .textContent = "Save invoice";
+
+      element("cancelEditButton")
+        .hidden = true;
+    }
+
+    element("cancelEditButton")
+      .addEventListener(
+        "click",
+        clearForm
+      );
+
+    element("clearSignatureButton")
+      .addEventListener(
+        "click",
+        clearCanvas
+      );
+
+    element("invoiceList")
+      .addEventListener(
+        "click",
+        function (event) {
+          var button =
+            event.target.closest("button");
+
+          if (!button) {
+            return;
+          }
+
+          var index =
+            Number(button.dataset.index);
+
+          var invoice =
+            invoices[index];
+
+          if (
+            button.dataset.action ===
+            "delete"
+          ) {
+            if (
+              confirm(
+                "Delete " +
+                invoice.number +
+                "?"
+              )
+            ) {
+              invoices.splice(index, 1);
+
+              invoices.forEach(
+                function (item, itemIndex) {
+                  item.number =
+                    invoiceNumber(
+                      itemIndex + 1
+                    );
+                }
+              );
+
+              saveData();
+              renderInvoices();
+            }
+          }
+
+          if (
+            button.dataset.action ===
+            "edit"
+          ) {
+            editingIndex = index;
+
+            element("customerInput")
+              .value = invoice.customer;
+
+            element("amountInput")
+              .value = invoice.amount;
+
+            element("dueDateInput")
+              .value = invoice.dueDate;
+
+            element("notesInput")
+              .value = invoice.notes;
+
+            element("saveInvoiceButton")
+              .textContent = "Update invoice";
+
+            element("cancelEditButton")
+              .hidden = false;
+
+            window.scrollTo(0, 0);
+          }
+
+          if (
+            button.dataset.action ===
+            "payment"
+          ) {
+            var balance =
+              invoice.amount -
+              invoice.paid;
+
+            var payment =
+              Number(
+                prompt(
+                  "Remaining balance: " +
+                  money(balance) +
+                  "\
+Enter payment:"
+                )
+              );
+
+            if (
+              payment > 0 &&
+              payment <= balance
+            ) {
+              invoice.paid += payment;
+
+              invoice.payments.push({
+                amount: payment,
+                date: today()
+              });
+
+              saveData();
+              renderInvoices();
+            }
+          }
+        }
+      );
+
+    element("searchInput")
+      .addEventListener(
+        "input",
+        renderInvoices
+      );
+
+    element("statusFilter")
+      .addEventListener(
+        "change",
+        renderInvoices
+      );
+
+    element("sortFilter")
+      .addEventListener(
+        "change",
+        renderInvoices
+      );
+
+    element("themeButton")
+      .addEventListener(
+        "click",
+        function () {
+          document.body.classList.toggle(
+            "dark"
+          );
+
+          localStorage.setItem(
+            "invoiceTheme",
+            document.body.classList.contains(
+              "dark"
+            )
+              ? "dark"
+              : "light"
+          );
+        }
+      );
+
+    element("printButton")
+      .addEventListener(
+        "click",
+        function () {
+          element("printDate")
+            .textContent =
+            new Date().toLocaleDateString(
+              "en-KE",
+              {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+              }
+            );
+
+          window.print();
+        }
+      );
+
+    element("exportButton")
+      .addEventListener(
+        "click",
+        function () {
+          var backup = new Blob(
+            [
+              JSON.stringify(
+                {
+                  business: business,
+                  invoices: invoices
+                },
+                null,
+                2
+              )
+            ],
+            {
+              type: "application/json"
+            }
+          );
+
+          var link =
+            document.createElement("a");
+
+          link.href =
+            URL.createObjectURL(backup);
+
+          link.download =
+            "invoice-backup.json";
+
+          link.click();
+        }
+      );
+
+    element("importButton")
+      .addEventListener(
+        "click",
+        function () {
+          element("importInput").click();
+        }
+      );
+
+    element("importInput")
+      .addEventListener(
+        "change",
+        function (event) {
+          var file =
+            event.target.files[0];
+
+          if (!file) {
+            return;
+          }
+
+          var reader =
+            new FileReader();
+
+          reader.onload =
+            function () {
+              try {
+                var backup =
+                  JSON.parse(
+                    reader.result
+                  );
+
+                if (
+                  !Array.isArray(
+                    backup.invoices
+                  )
+                ) {
+                  throw new Error(
+                    "Invalid backup"
+                  );
+                }
+
+                if (
+                  confirm(
+                    "Replace current data?"
+                  )
+                ) {
+                  invoices =
+                    backup.invoices;
+
+                  business = Object.assign(
+                    business,
+                    backup.business || {}
+                  );
+
+                  saveData();
+                  updateBusinessDisplay();
+                  renderInvoices();
+                }
+              } catch (error) {
+                element("message")
+                  .textContent =
+                  "Invalid backup file.";
+              }
+            };
+
+          reader.readAsText(file);
+        }
+      );
+
+    element("refreshStorageButton")
+      .addEventListener(
+        "click",
+        updateStorageStatus
+      );
+
+    element("clearDataButton")
+      .addEventListener(
+        "click",
+        function () {
+          if (
+            !confirm(
+              "Clear all application data?"
+            )
+          ) {
+            return;
+          }
+
+          invoices = [];
+
+          business = {
+            name: "",
+            phone: "",
+            email: "",
+            address: "",
+            currency: "KES",
+            dateFo
