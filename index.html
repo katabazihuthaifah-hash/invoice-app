@@ -1640,4 +1640,119 @@ Enter payment:"
             email: "",
             address: "",
             currency: "KES",
-            dateFo
+            dateFormat: "DMY",
+            logo: ""
+          };
+
+          saveData();
+          updateBusinessDisplay();
+          renderInvoices();
+        }
+      );
+
+    element("notificationButton")
+      .addEventListener(
+        "click",
+        async function () {
+          if (
+            !("Notification" in window)
+          ) {
+            element("notificationMessage")
+              .textContent =
+              "Notifications unavailable.";
+            return;
+          }
+
+          var permission =
+            Notification.permission;
+
+          if (permission === "default") {
+            permission =
+              await Notification
+                .requestPermission();
+          }
+
+          if (permission !== "granted") {
+            element("notificationMessage")
+              .textContent =
+              "Notification permission not granted.";
+            return;
+          }
+
+          var overdue =
+            invoices.filter(
+              function (invoice) {
+                return invoiceStatus(invoice)
+                  .className === "overdue";
+              }
+            );
+
+          if (
+            overdue.length &&
+            "serviceWorker" in navigator
+          ) {
+            var registration =
+              await navigator.serviceWorker.ready;
+
+            registration.showNotification(
+              "Overdue invoices",
+              {
+                body:
+                  overdue.length +
+                  " overdue invoice(s) require attention."
+              }
+            );
+          }
+
+          element("notificationMessage")
+            .textContent =
+            overdue.length
+              ? "Overdue notification sent."
+              : "No overdue invoices found.";
+        }
+      );
+
+    element("themeButton").textContent =
+      document.body.classList.contains("dark")
+        ? "Switch to light mode"
+        : "Switch to dark mode";
+
+    if (
+      localStorage.getItem(
+        "invoiceTheme"
+      ) === "dark"
+    ) {
+      document.body.classList.add("dark");
+      element("themeButton").textContent =
+        "Switch to light mode";
+    }
+
+    window.addEventListener(
+      "beforeinstallprompt",
+      function (event) {
+        event.preventDefault();
+        deferredInstall = event;
+      }
+    );
+
+    if (
+      "serviceWorker" in navigator &&
+      window.isSecureContext
+    ) {
+      navigator.serviceWorker
+        .register("sw.js")
+        .catch(function () {});
+    }
+
+    window.addEventListener(
+      "resize",
+      resizeCanvas
+    );
+
+    loadData();
+    resizeCanvas();
+    updateBusinessDisplay();
+    renderInvoices();
+  </script>
+</body>
+</html>
